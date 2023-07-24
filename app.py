@@ -20,7 +20,6 @@ def home():
 
         r_t = round(100*((alpha/10 + 1) * p_ctp/100 - 1), 1)
         r_f = round(100*((alpha/10 + 1) * p_cfp/100 - 1), 1)
-        alpha_scaled = alpha/10
     return render_template('home.html', r_t=r_t, r_f=r_f, p_ctp=p_ctp, p_cfp=p_cfp, alpha=alpha)
 
     
