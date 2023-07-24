@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+
+{% if error %}
+  <p style="color: red;">{{ error }}</p>
+{% endif %}
+
+<h1>Lido - accuser's expected return calculator</h1>
+<p>Author: Mingxuan He @ Nethermind </p>
+
+<form method="POST">
+  <label for="p_ctp">Court True Positive Rate (%):</label><br>
+  <input type="number" id="p_ctp" name="p_ctp" value="{{ p_ctp }}" onchange="updateSlider()"><br>
+  
+  <label for="p_cfp">Court False Negative Rate (%):</label><br>
+  <input type="number" id="p_cfp" name="p_cfp" value="{{ p_cfp }}" onchange="updateSlider()"><br>
+  
+  <label for="alpha">Reward to Accuser's Bond Ratio (&alpha;):</label><br>
+  <input type="range" id="alpha" name="alpha" min="0" max="100" step="0.5" value="10" oninput="sliderValue.value=parseFloat(alpha.value)/10">
+  <output id="sliderValue">1.00</output><br>
+  
+  <input type="submit" value="Compute returns">
+</form>
+
+<script>
+    function updateSlider() {
+      var p_ctp = document.getElementById('p_ctp').value;
+      var p_cfp = document.getElementById('p_cfp').value;
+    
+      if (p_ctp && p_cfp) {
+        var alpha = document.getElementById('alpha');
+        alpha.min = 10 * (100-p_ctp) / p_ctp;
+        alpha.max = 10 * (100-p_cfp) / p_cfp;
+      }
+    }
+    </script>
+
+{% if r_t is not none and r_f is not none %}
+  <p>Expected Returns (% of accuser bond): </p>
+  <p> True case: {{ r_t  }} &percnt; </p>
+  <p> False case: {{ r_f }} &percnt; </p>
+{% endif %}
+
+</body>
+</html>
